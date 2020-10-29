@@ -12,26 +12,23 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.spring.jwt.model.UserDto;
 import com.spring.jwt.repository.UserRepository;
+import com.spring.jwt.service.UserService;
 
 @RestController
 public class UserController {
 
 	@Autowired
-	private UserRepository userRepository;
+	private UserService userService;
 	
-	@Autowired
-	private PasswordEncoder passwordEncoder;
-
 	@PostMapping("/register")
 	public ResponseEntity<?> register(@RequestBody UserDto userDto) {
-		userDto.setPassword(passwordEncoder.encode(userDto.getPassword()));
-		UserDto user = userRepository.save(userDto);
+		UserDto user = userService.register(userDto);
 		return ResponseEntity.ok(user);
 	}
 
 	@GetMapping("/user/{userName}")
 	public ResponseEntity<?> getUser(@PathVariable String userName) {
-		UserDto userDto = userRepository.findByUserName(userName);
+		UserDto userDto = userService.getUser(userName);
 		return ResponseEntity.ok(userDto);
 	}
 }
