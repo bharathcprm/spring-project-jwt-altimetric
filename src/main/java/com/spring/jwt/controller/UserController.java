@@ -3,6 +3,7 @@ package com.spring.jwt.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -16,10 +17,14 @@ import com.spring.jwt.repository.UserRepository;
 public class UserController {
 
 	@Autowired
-	UserRepository userRepository;
+	private UserRepository userRepository;
+	
+	@Autowired
+	private PasswordEncoder passwordEncoder;
 
 	@PostMapping("/register")
 	public ResponseEntity<?> register(@RequestBody UserDto userDto) {
+		userDto.setPassword(passwordEncoder.encode(userDto.getPassword()));
 		UserDto user = userRepository.save(userDto);
 		return ResponseEntity.ok(user);
 	}
