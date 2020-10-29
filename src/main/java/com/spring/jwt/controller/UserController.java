@@ -19,7 +19,7 @@ public class UserController {
 
 	@Autowired
 	private UserService userService;
-	
+
 	@PostMapping("/register")
 	public ResponseEntity<?> register(@RequestBody UserDto userDto) {
 		UserDto user = userService.register(userDto);
@@ -30,5 +30,11 @@ public class UserController {
 	public ResponseEntity<?> getUser(@PathVariable String userName) {
 		UserDto userDto = userService.getUser(userName);
 		return ResponseEntity.ok(userDto);
+	}
+
+	@GetMapping("/message")
+	public String message() {
+
+		return "Hello";
 	}
 }
